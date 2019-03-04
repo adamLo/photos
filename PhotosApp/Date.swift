@@ -17,4 +17,15 @@ extension Date {
         
         return formatter.string(from: self)
     }
+    
+    init?(stringRepresentation: String) {
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "YYYYMMdd"
+        if let date = formatter.date(from: stringRepresentation) {
+            self = date
+        }
+        
+        return nil
+    }
 }

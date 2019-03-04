@@ -11,7 +11,7 @@ import CoreData
 
 extension Folder {
     
-    private static let entityName = "Folder"
+    static let entityName = "Folder"
     
     class func new(in context: NSManagedObjectContext) -> Folder? {
         
@@ -41,5 +41,19 @@ extension Folder {
         }
         
         return nil
+    }
+    
+    override public var description: String {
+        return "\(date ?? "") \(locationName ?? "") \(neighborhood ?? "")"
+    }
+    
+    @objc func compare(_ other: Folder) -> ComparisonResult {
+        
+        if locationName == other.locationName && neighborhood == other.neighborhood && date == other.date {
+            
+            return ComparisonResult.orderedSame
+        }
+        
+        return ComparisonResult.orderedAscending
     }
 }

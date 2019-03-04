@@ -11,7 +11,7 @@ import CoreData
 
 extension Asset {
     
-    private static let entityName = "Asset"
+    static let entityName = "Asset"
     
     class func new(in context: NSManagedObjectContext) -> Asset? {
         
