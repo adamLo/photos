@@ -2,9 +2,19 @@
 platform :ios, '12.1'
 use_frameworks!
 
-target 'PhotosApp' do
+def all_pods
+  
+  # Progress HUD
+  pod 'MBProgressHUD'
+  
+  # Google
+  pod 'GoogleMaps'
+end
 
-    # Progress HUD
-    pod 'MBProgressHUD'
-    
+target 'PhotosApp' do
+  all_pods
+end
+
+target 'PhotosAppTests' do
+  all_pods
 end

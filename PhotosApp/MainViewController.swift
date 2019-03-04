@@ -11,11 +11,33 @@ import UIKit
 class MainViewController: UIViewController {
 
     override func viewDidLoad() {
+        
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        switch PhotosHelper.shared.permissionStatus {
+        
+        case .notDetermined:
+            PhotosHelper.shared.requestAuthorization {[weak self] (status) in
+                if status == .authorized {
+                    self?.syncPhotos()
+                }
+            }
+        case .authorized:
+            syncPhotos()
+        case .deniedOrRestricted:
+            // FIXME: Show error dalog
+            break
+        }
+        
     }
     
+    private func syncPhotos() {
+        
+        PhotosHelper.shared.readPhotos {[weak self] (success, error) in
+            
+            print("Success: \(success) error: \(error?.localizedDescription ?? "NONE")")
+        }
+    }
 
     /*
     // MARK: - Navigation

@@ -49,21 +49,54 @@ class PhotosHelper {
         }
     }
     
-    func readPhotos(completion: (() -> ())?) {
+    func readPhotos(completion: ((_ success: Bool, _ error: Error?) -> ())?) {
         
         DispatchQueue.global(qos: .background).async {
             
             let assets = PHAsset.fetchAssets(with: PHFetchOptions())
+            let context = CoreDataHelper.shared.createNewManagedObjectContext()
             
             for i in 0..<assets.count {
                 
                 let asset = assets.object(at: i)
+                let identifier = asset.localIdentifier
                 
+                var _asset: Asset!
+                _asset = Asset.find(in: context, identifier: identifier)
+                
+                if _asset == nil {
+                    _asset = Asset.new(in: context)
+                    _asset.identifier = identifier
+                    
+                }
+                
+                if !_asset.isComplete {
+                
+                    _asset.created = asset.creationDate as NSDate?
+                    _asset.modified = asset.modificationDate as NSDate?
+                    
+                    if let _locaton = asset.location {
+                        
+                        _asset.latitude = _locaton.coordinate.latitude
+                        _asset.longitude = _locaton.coordinate.longitude
+                    }
+                }
+            }
+            
+            var error: Error?
+            if context.hasChanges {
+                
+                do {
+                    try context.save()
+                }
+                catch let _error {
+                    error = _error
+                }
             }
         
             DispatchQueue.main.async {
                 
-                completion?()
+                completion?(error == nil, error)
             }
         }
     }

@@ -18,7 +18,7 @@ extension Folder {
     }
 
     @NSManaged public var locationName: String?
-    @NSManaged public var date: NSDate?
+    @NSManaged public var date: String?
     @NSManaged public var assets: NSSet?
 
 }
