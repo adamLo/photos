@@ -58,6 +58,7 @@ class PhotosHelper {
             for i in 0..<assets.count {
                 
                 let asset = assets.object(at: i)
+                
             }
         
             DispatchQueue.main.async {
