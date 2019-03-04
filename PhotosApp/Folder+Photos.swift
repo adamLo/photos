@@ -24,10 +24,10 @@ extension Folder {
         return nil
     }
     
-    class func find(in context: NSManagedObjectContext, locationName: String, date: Date) -> Folder? {
+    class func find(in context: NSManagedObjectContext, locationName: String?, neighborhood: String?, date: Date) -> Folder? {
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        fetchRequest.predicate = NSPredicate(format: "locationName = %@ AND date = %@", locationName, date.stringRepresentation)
+        fetchRequest.predicate = NSPredicate(format: "locationName = %@ AND neighborhood = %@ AND date = %@", locationName ?? "", neighborhood ?? "", date.stringRepresentation)
         fetchRequest.fetchLimit = 1
         
         do {

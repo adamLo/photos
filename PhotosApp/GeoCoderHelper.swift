@@ -10,13 +10,21 @@ import Foundation
 import GoogleMaps
 import CoreLocation
 
+struct LocationInfo {
+    let locality: String
+    let neighborhood: String?
+}
+
+typealias JSONObject = [String: Any]
+typealias JSONArray = [JSONObject]
+
 class GeoCoderHelper: NSObject {
     
     static let shared = GeoCoderHelper()
     
     struct GeocoderConfig {
         
-        static let APIkey               = "ADD"
+        static let APIkey               = "AIzaSyAiIyEcwaXXJxvvr3evBS2-Y9ALJPIXgaM"
         
         // Paths
         
@@ -53,6 +61,10 @@ class GeoCoderHelper: NSObject {
         static let streetAddress        = "street_address"
         static let formattedAddress     = "formatted_address"
         static let route                = "route"
+        static let political            = "political"
+        static let locality             = "locality"
+        static let adminstrativeLevel1  = "administrative_area_level_1"
+        static let adminstrativeLevel2  = "administrative_area_level_2"
         
         // Parameter values
         
@@ -86,7 +98,7 @@ class GeoCoderHelper: NSObject {
         resignFromMemoryWarningNotification()
     }
     
-    func reverseGeocode(for coordinate: CLLocationCoordinate2D, completion: ((_ address: String?, _ error: NSError?) ->())?) {
+    func reverseGeocode(for coordinate: CLLocationCoordinate2D, completion: ((_ locationInfo: LocationInfo?, _ error: NSError?) ->())?) {
         
         print("Reverse geocoding for \(coordinate.latitude).\(coordinate.longitude)")
         
@@ -104,21 +116,70 @@ class GeoCoderHelper: NSObject {
                 }
                 else {
                     
-                    let address = results?.first?[GeocoderConfig.formattedAddress] as? String
+                    if let result = results?.first, let components = result[GeocoderConfig.addressComponents] as? JSONArray {
+                        
+                        var locality: String?
+                        var level1: String?
+                        var level2: String?
+                        
+                        for component in components {
+                            
+                            if let types = component[GeocoderConfig.types] as? [String], let _name = component[GeocoderConfig.shortName] as? String {
+                                
+                                if types.contains(GeocoderConfig.political) && types.contains(GeocoderConfig.locality) && locality == nil {
+                                    locality = _name
+                                }
+                                else if types.contains(GeocoderConfig.political) && types.contains(GeocoderConfig.adminstrativeLevel1) && level1 == nil {
+                                    level1 = _name
+                                }
+                                else if types.contains(GeocoderConfig.political) && types.contains(GeocoderConfig.adminstrativeLevel2) && level2 == nil {
+                                    level2 = _name
+                                }
+                                else if types.contains(GeocoderConfig.route) && locality == nil {
+                                    locality = _name
+                                }
+                                else if types.contains(GeocoderConfig.political) && types.contains(GeocoderConfig.country) && level1 == nil {
+                                    level1 = _name
+                                }
+                            }
+                        }
                     
-                    completion?(address, nil)
+                        if let _locality = locality {
+                         
+                            var neighborhood: String?
+                            if let _level1 = level1, let _level2 = level2 {
+                                neighborhood = "\(_level2), \(_level1)"
+                            }
+                            else if let _level1 = level1 {
+                                neighborhood = _level1
+                            }
+                            else if let _level2 = level2 {
+                                neighborhood = _level2
+                            }
+                            let locationInfo = LocationInfo(locality: _locality, neighborhood: neighborhood)
+                            
+                            completion?(locationInfo, nil)
+                        }
+                        else {
+                            completion?(nil, nil)
+                        }
+                    }
+                    else {
+                        
+                        completion?(nil, nil)
+                    }
                 }
             })
         }
     }
     
-    func cachedAddress(for location: CLLocationCoordinate2D) -> String? {
+    func cachedAddress(for location: CLLocationCoordinate2D) -> LocationInfo? {
         
         let coordString = String(coordinate: location, separator: ".")
         
-        if let address = addressCache.object(forKey: coordString as AnyObject) as? String {
+        if let info = addressCache.object(forKey: coordString as AnyObject) as? LocationInfo {
             
-            return address
+            return info
         }
         
         return nil
@@ -141,9 +202,9 @@ class GeoCoderHelper: NSObject {
             
             fetch(for: coordinate, with: { (results, error) in
                 
-                if results != nil {
-                    
-                    for result in results! {
+                if let _results = results {
+                
+                    for result in _results {
                         
                         if let types = result[GeocoderConfig.types] as? [String], let components = result[GeocoderConfig.addressComponents] as? [[String: Any]] {
                             
@@ -161,7 +222,7 @@ class GeoCoderHelper: NSObject {
     
     internal lazy var defaultSession = URLSession(configuration: URLSessionConfiguration.default)
     
-    private func fetch(for coordinate: CLLocationCoordinate2D, with completion: ((_ results: [[String: Any]]?, _ error: Error?) -> ())?) {
+    private func fetch(for coordinate: CLLocationCoordinate2D, with completion: ((_ results: JSONArray?, _ error: Error?) -> ())?) {
         
         let url = GeocoderConfig.baseURL.appendingPathComponent(GeocoderConfig.pathGeocoder).appendingPathComponent(GeocoderConfig.pathJson).appendingLatLng(from: coordinate).appendingRegion().appendingLanguage().appendingAPIKey()
         

@@ -45,7 +45,7 @@ extension Asset {
     
     var isComplete: Bool {
         
-        if longitude != 0.0 && latitude != 0.0 && created != nil && folder == nil {
+        if longitude != 0.0 && latitude != 0.0 && folder == nil {
             return false
         }
         

@@ -17,8 +17,9 @@ extension Folder {
         return NSFetchRequest<Folder>(entityName: "Folder")
     }
 
-    @NSManaged public var locationName: String?
     @NSManaged public var date: String?
+    @NSManaged public var locationName: String?
+    @NSManaged public var neighborhood: String?
     @NSManaged public var assets: NSSet?
 
 }
