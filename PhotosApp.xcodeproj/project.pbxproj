@@ -40,6 +40,8 @@
 		19E20D4F222DAC4E00F1E34D /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E20D4D222DAC4E00F1E34D /* String.swift */; };
 		19E20D51222DD25C00F1E34D /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E20D50222DD25C00F1E34D /* PhotoCell.swift */; };
 		19E20D52222DD25C00F1E34D /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E20D50222DD25C00F1E34D /* PhotoCell.swift */; };
+		19E20D55222E623C00F1E34D /* PhotoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E20D54222E623C00F1E34D /* PhotoHeaderView.swift */; };
+		19E20D56222E623C00F1E34D /* PhotoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E20D54222E623C00F1E34D /* PhotoHeaderView.swift */; };
 		309D5E4DDD6B426C91CC77C0 /* Pods_PhotosAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAD6B89C1BA7921E032F447F /* Pods_PhotosAppTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -78,6 +80,7 @@
 		19E20D4A222DABD000F1E34D /* GeoCoderHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoCoderHelper.swift; sourceTree = "<group>"; };
 		19E20D4D222DAC4E00F1E34D /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		19E20D50222DD25C00F1E34D /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
+		19E20D54222E623C00F1E34D /* PhotoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoHeaderView.swift; sourceTree = "<group>"; };
 		3F05751B339DE56662EBC153 /* Pods_Photos.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Photos.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F4C2F538A2EB78E66437D9E /* Pods-PhotosAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotosAppTests.debug.xcconfig"; path = "Target Support Files/Pods-PhotosAppTests/Pods-PhotosAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		71A4282D6C3636220B1F7F69 /* Pods-Photos.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Photos.release.xcconfig"; path = "Target Support Files/Pods-Photos/Pods-Photos.release.xcconfig"; sourceTree = "<group>"; };
@@ -223,6 +226,7 @@
 			children = (
 				19E20D26222D9A9400F1E34D /* MainViewController.swift */,
 				19E20D50222DD25C00F1E34D /* PhotoCell.swift */,
+				19E20D54222E623C00F1E34D /* PhotoHeaderView.swift */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -506,6 +510,7 @@
 				19E20D0B222D974A00F1E34D /* PhotosApp.xcdatamodeld in Sources */,
 				19E20D3C222DA6A800F1E34D /* CoreDataHelper.swift in Sources */,
 				19E20D33222DA65D00F1E34D /* Asset+CoreDataClass.swift in Sources */,
+				19E20D55222E623C00F1E34D /* PhotoHeaderView.swift in Sources */,
 				19E20D03222D974A00F1E34D /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -526,6 +531,7 @@
 				19E20D4C222DABD000F1E34D /* GeoCoderHelper.swift in Sources */,
 				19E20D2C222D9C5D00F1E34D /* PhotosHelper.swift in Sources */,
 				19E20D48222DA9D600F1E34D /* Date.swift in Sources */,
+				19E20D56222E623C00F1E34D /* PhotoHeaderView.swift in Sources */,
 				19E20D28222D9A9400F1E34D /* MainViewController.swift in Sources */,
 				19E20D38222DA65D00F1E34D /* Folder+CoreDataClass.swift in Sources */,
 			);

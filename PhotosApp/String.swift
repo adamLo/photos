@@ -17,4 +17,17 @@ extension String {
         
         self = latLngString
     }
+    
+    var trimmed: String {
+        get {
+            return self.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+    }
+    
+    var nilIfEmpty: String? {
+        get {
+            let _trimmed =  self.trimmed
+            return _trimmed.isEmpty ? nil : _trimmed
+        }
+    }
 }

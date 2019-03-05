@@ -16,11 +16,17 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        title = NSLocalizedString("Photos", comment: "Photos list title")
 
         setupFetchedResultsController()
+        checkPermission()
+    }
+    
+    private func checkPermission() {
         
         switch PhotosHelper.shared.permissionStatus {
-        
+            
         case .notDetermined:
             PhotosHelper.shared.requestAuthorization {[weak self] (status) in
                 if status == .authorized {
@@ -33,7 +39,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             // FIXME: Show error dalog
             break
         }
-        
     }
     
     private func syncPhotos() {
@@ -85,6 +90,22 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         
         let width = max(collectionView.bounds.size.width / 4, 50.0)
         return CGSize(width: width, height: width)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        if let controller = fetchedResultsController, let objects = controller.fetchedObjects, let folder = objects[indexPath.section] as? Folder, let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: PhotoHeaderView.reuseId, for: indexPath) as? PhotoHeaderView {
+            
+            view.setup(folder: folder)
+            return view
+        }
+        
+        return UICollectionReusableView()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        
+        return CGSize(width: collectionView.bounds.size.width, height: 60)
     }
     
     // MARK: - NSFetchedResultsController

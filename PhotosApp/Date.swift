@@ -24,6 +24,7 @@ extension Date {
         formatter.dateFormat = "YYYYMMdd"
         if let date = formatter.date(from: stringRepresentation) {
             self = date
+            return
         }
         
         return nil
