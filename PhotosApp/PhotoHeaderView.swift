@@ -39,7 +39,7 @@ class PhotoHeaderView: UICollectionReusableView {
             
             if let _ = folder.locationName?.nilIfEmpty {
                 attributedTitle.append(NSAttributedString(string: "\n"))
-                attributedTitle.append(NSAttributedString(string: dateString, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: UIColor.darkGray]))
+                attributedTitle.append(NSAttributedString(string: dateString, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
             }
             else {
                 attributedTitle.append(NSAttributedString(string: dateString, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: UIColor.black]))
@@ -50,8 +50,8 @@ class PhotoHeaderView: UICollectionReusableView {
             
             let line1 = folder.locationName?.nilIfEmpty ?? folder.date?.nilIfEmpty
             if let _ = line1 {
-                attributedTitle.append(NSAttributedString(string: " - "))
-                attributedTitle.append(NSAttributedString(string: neighborhood, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: UIColor.darkGray]))
+                attributedTitle.append(NSAttributedString(string: " - ", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
+                attributedTitle.append(NSAttributedString(string: neighborhood, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
             }
             else {
                 attributedTitle.append(NSAttributedString(string: neighborhood, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: UIColor.black]))
