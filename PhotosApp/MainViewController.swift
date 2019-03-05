@@ -51,9 +51,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         
-        if let controller = fetchedResultsController {
-            
-            return controller.sectionIndexTitles.count
+        if let controller = fetchedResultsController, let objects = controller.fetchedObjects {
+            return objects.count
         }
         
         return 0
@@ -61,10 +60,10 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     
-        if let controller = fetchedResultsController, let _section = controller.sections?[section] {
+        if let controller = fetchedResultsController, let objects = controller.fetchedObjects, let folder = objects[section] as? Folder, let assets = folder.assets {
+        
+            return assets.count
             
-            print("section: \(section) count: \(_section.numberOfObjects) title: \(_section.name)")
-            return _section.numberOfObjects
         }
         
         return 0
@@ -72,8 +71,9 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        if let controller = fetchedResultsController, let section = controller.sections?[indexPath.section], let asset = section.objects?[indexPath.item] as? Asset, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.reuseId, for: indexPath) as? PhotoCell {
-            
+        if let controller = fetchedResultsController, let objects = controller.fetchedObjects, let folder = objects[indexPath.section] as? Folder, let assets = folder.assets?.allObjects as? [Asset], let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.reuseId, for: indexPath) as? PhotoCell {
+        
+            let asset = assets[indexPath.item]
             cell.setup(asset: asset)
             return cell
         }
@@ -95,12 +95,15 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         
         if let context = CoreDataHelper.shared.managedObjectContext {
         
-            let request = NSFetchRequest<NSFetchRequestResult>(entityName: Asset.entityName)
-            let sortOrder1 = NSSortDescriptor(key: "folder", ascending: true, selector: #selector(Folder.compare(_:)))
-            let sortOrder2 = NSSortDescriptor(key: "created", ascending: true)
-            request.sortDescriptors = [sortOrder1, sortOrder2]
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: Folder.entityName)
+            request.sortDescriptors = [
+                NSSortDescriptor(key: "locationName", ascending: true),
+                NSSortDescriptor(key: "neighborhood", ascending: true),
+                NSSortDescriptor(key: "date", ascending: true)
+            ]
+            request.includesSubentities = true
             
-            let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: "folder", cacheName: nil)
+            let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
             controller.delegate = self
             
             do {

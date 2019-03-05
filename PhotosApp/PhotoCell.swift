@@ -23,8 +23,10 @@ class PhotoCell: UICollectionViewCell {
             
             let result = PHAsset.fetchAssets(withLocalIdentifiers: [identifier], options: PHFetchOptions())
             if let _asset = result.firstObject {
-                requestImage(for: _asset, targetSize: contentView.bounds.size, contentMode: .aspectFill) { (image) in
-                    self.photoImageView.image = image
+                requestImage(for: _asset, targetSize: CGSize(width: contentView.bounds.size.width * UIScreen.main.scale, height: contentView.bounds.size.height * UIScreen.main.scale) , contentMode: .aspectFill) {[weak self] (image) in
+                    DispatchQueue.main.async {
+                        self?.photoImageView.image = image
+                    }
                 }
             }
             

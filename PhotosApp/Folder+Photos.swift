@@ -53,7 +53,40 @@ extension Folder {
             
             return ComparisonResult.orderedSame
         }
+        else if let l1 = locationName, let l2 = other.locationName {
+            
+            if l1 == l2, let n1 = neighborhood, let n2 = other.neighborhood {
+                
+                if n1 == n2, let d1 = date, let d2 = other.date, let _d1 = Date(stringRepresentation: d1), let _d2 = Date(stringRepresentation: d2) {
+                    
+                    if _d1 > _d2 {
+                        return ComparisonResult.orderedDescending
+                    }
+                    else {
+                        return ComparisonResult.orderedDescending
+                    }
+                }
+                else if n1 > n2 {
+                    return ComparisonResult.orderedDescending
+                }
+                else if n1 < n2 {
+                    return ComparisonResult.orderedAscending
+                }
+            }
+            else if l1 > l2 {
+                return ComparisonResult.orderedDescending
+            }
+            else if l2 > l1 {
+                return ComparisonResult.orderedAscending
+            }
+        }
+        else if let _ = locationName {
+            return ComparisonResult.orderedAscending
+        }
+        else if let _ = other.locationName {
+            return ComparisonResult.orderedDescending
+        }
         
-        return ComparisonResult.orderedAscending
+        return ComparisonResult.orderedSame
     }
 }
